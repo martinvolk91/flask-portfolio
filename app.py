@@ -1,6 +1,7 @@
 # recommender_api.py
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pickle
 import numpy as np
 import pandas as pd
@@ -8,6 +9,7 @@ from scipy.sparse import csr_matrix
 import implicit
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Load your recommender system from the pickle file
 with open('movielens_implicit_cpu.pkl', 'rb') as file:
@@ -18,6 +20,8 @@ with open('movielens_implicit_cpu.pkl', 'rb') as file:
 def recommend():
     data = request.get_json()
     movie_indices = data.get('movie_ids')
+
+    print(f"Input: {movie_indices}")
 
     # Create the data, indices, and indptr arrays
     data = np.ones(len(movie_indices))
@@ -31,6 +35,7 @@ def recommend():
     movies = pd.read_parquet("data/movies.parquet")
     recommended_movies = list(movies[movies.movie_id.isin(ids)].title)
 
+    print(f"Output: {recommended_movies}")
     return jsonify(recommended_movies)
 
 
