@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Load your recommender system from the pickle file
-with open('movielens_implicit_cpu.pkl', 'rb') as file:
+with open('movielens_implicit_cpu_v02.pkl', 'rb') as file:
     model_load = pickle.load(file)
 
 
